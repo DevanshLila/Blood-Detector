@@ -54,15 +54,22 @@ The application features a responsive, dark navy scientific workstation interfac
   - Interactive Arduino UNO R4 Minima visual board with live LED matrix and pin status indicators.
   - Interactive circuit interface schematic.
   - Virtual 115200 baud serial monitor with command prompt (`SCAN`, `MODE=1`, `CALIB`, `STATUS`).
-- **Laptop Analysis Dashboard View:**
-  - 4-Panel Synchronized Optical Inspection Workstation:
-    - **Panel A:** Clean Reference Image (Baseline)
-    - **Panel B:** 365 nm UV Autofluorescence Frame
-    - **Panel C:** 850 nm NIR Absorption Frame
-    - **Panel D:** Candidate Residue Map (Red outline contours, transparent red overlay, cyan structural edges, ROI boxes)
-  - Interactive zoom and pan (up to 300%) synchronized across all panels.
-  - Dynamic detection threshold slider (dynamically recalculates contours and candidate area in real-time).
-  - Interactive contamination spot tuner: click directly on the instrument canvas to place spots or use position/size/density sliders!
+- **Laptop Analysis Dashboard View (BloodTrace Vision):**
+  - **4-Panel Synchronized Optical Inspection Workstation (Matches Poster Design):**
+    - **Panel 1: Visible Image** — Actual photographic specimen or clean reference surface.
+    - **Panel 2: UV Image (Simulated 365 nm)** — Luminous autofluorescence visualization.
+    - **Panel 3: IR Image (Simulated 850 nm)** — Grayscale near-infrared reflectance with hemoglobin absorption.
+    - **Panel 4: Contamination & Surface Analysis Map** — Pixel-aligned candidate residue overlay with vertical High-Low gradient color bar.
+  - **Bottom Status Indicator:** Displays dynamic `Total Contaminated Area: X.X%` with glowing `[CONTAMINATION DETECTED]` or `[NO CANDIDATE REGION DETECTED]`.
+  - **Dedicated "Compare Both" View:** Side-by-side comparison of clean reference vs. blood-contaminated challenge with difference visualization and differential parameters table.
+  - **Candidate Region Inspector:** Interactive cards reporting Region ID (ROI-01, etc.), confidence score, area, UV/IR scores, and optical explanation.
+  - **Real-Time Controls:** Detection threshold slider, min region size, UV/IR intensities, overlay opacity, and UV mode selector.
+  - **Real Photographic Test Specimens:**
+    - Clean Reference Surface (`assets/images/clean_surface.jpg`)
+    - Blood-Contaminated Surgical Clamp (`assets/images/contaminated_surface.jpg`)
+    - Contaminated Scalpel Blade (`assets/images/scalpel_blade.jpg` — matches poster reference)
+    - Surgical Tools Set with Blood Marks (`assets/images/surgical_set_blood.jpg`)
+    - Contaminated Gauze (`assets/images/contaminated_gauze.jpg`)
 - **Results & Records View:**
   - Historical table of all screening runs with telemetry data.
   - One-click inspection of previous scan profiles.
@@ -89,15 +96,16 @@ Then navigate to `http://localhost:8000` in any modern web browser.
 
 ## 5. Verification & Testing
 
-To run the automated test suite:
+To run the automated Python DOM & Component Binding Tests:
 ```bash
-node test/test-simulation.js
+python test/test-dom.py
+python test/test-component-bindings.py
 ```
-The test suite verifies:
-- Instrument data models and anatomical critical areas
-- Deterministic pseudo-random number generator and Gaussian distributions
-- Optical physics models (UV fluorescence, NIR absorption dip, photodiode ADC response)
-- Computer vision classification logic and tri-state diagnostic results
-- Dynamic threshold filtering
-- 9-step demonstration scenario integrity
-- Boundary values and error recovery (empty inputs, 0/100 thresholds, repeated scan consistency)
+
+To run the Real Image Mathematical Verification Tests:
+```bash
+python test/test-real-image-processing.py
+```
+
+To run the full Browser-based Simulation Test Suite:
+Navigate to `http://localhost:8000/test/runner.html` in your browser. All tests pass with 100% assertions satisfied.

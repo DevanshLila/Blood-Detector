@@ -85,7 +85,7 @@ export const DEMO_STEPS = [
   {
     step: 9,
     title: 'Step 9: Engineering & Regulatory Conclusion',
-    description: 'Conclusion: Optical screening provides rapid, non-destructive localization of suspected residue, but spectral overlaps (e.g. detergents, scratches) necessitate chemical validation (protein swabs) before clinical confirmation.',
+    description: 'Conclusion: Optical screening provides rapid, non-destructive localization of suspected residue, but optical confounders (e.g. detergents, mineral marks) necessitate chemical validation (protein swabs) before clinical confirmation.',
     action: (app) => {
       app.openReportModal();
     }

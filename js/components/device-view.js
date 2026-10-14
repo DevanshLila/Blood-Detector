@@ -595,7 +595,10 @@ export class DeviceView {
     instCanvas.width = trayW;
     instCanvas.height = trayH;
     const instCtx = instCanvas.getContext('2d');
-    drawInstrument(instCtx, this.state.selectedInstrument, trayW, trayH, {
+    const instKey = this.state.selectedInstrument && this.state.selectedInstrument.startsWith('real_') 
+      ? 'forceps' 
+      : (this.state.selectedInstrument || 'forceps');
+    drawInstrument(instCtx, instKey, trayW, trayH, {
       lighting: this.state.illuminationMode
     });
     // Draw contamination on instrument

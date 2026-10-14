@@ -11,6 +11,7 @@ import { DashboardView } from './components/dashboard-view.js';
 import { TelemetryCharts } from './components/charts.js';
 import { DemoManager } from './components/demo-mode.js';
 import { ReportManager } from './components/report-modal.js';
+import { REAL_IMAGE_SAMPLES } from './models/real-image-processor.js';
 
 class BloodTraceApp {
   constructor() {
@@ -69,9 +70,16 @@ class BloodTraceApp {
       const view = params.get('view');
       const mode = params.get('mode');
       const inst = params.get('instrument');
+      const sample = params.get('sample');
       const cond = params.get('condition');
       const scan = params.get('scan');
       const report = params.get('report');
+
+      if (sample && this.dashboardView) {
+        const dashSelect = document.getElementById('dashboardSampleSelect');
+        if (dashSelect) dashSelect.value = sample;
+        this.dashboardView.setSample(sample);
+      }
 
       if (inst) this.selectInstrument(inst);
       if (cond) this.selectCondition(cond);
@@ -105,11 +113,23 @@ class BloodTraceApp {
     // Populate Instrument Selector options
     const instSelect = document.getElementById('instrumentSelect');
     if (instSelect) {
-      instSelect.innerHTML = Object.values(INSTRUMENT_DEFINITIONS).map(inst => `
-        <option value="${inst.id}" ${inst.id === this.state.selectedInstrument ? 'selected' : ''}>
-          ${inst.name}
-        </option>
-      `).join('');
+      instSelect.innerHTML = `
+        <optgroup label="── Actual Test Photographs ──">
+          <option value="real_clean_surface">Clean Reference Surface (Tools)</option>
+          <option value="real_contaminated_surface">Blood-Contaminated Surface (Clamp)</option>
+          <option value="real_scalpel_blade">Contaminated Scalpel Blade (Poster Reference)</option>
+          <option value="real_surgical_set_blood">Surgical Tools Set with Blood Marks</option>
+          <option value="real_contaminated_gauze">Contaminated Instruments on Gauze</option>
+          <option value="real_compare_both">Compare Both (Clean vs Contaminated)</option>
+        </optgroup>
+        <optgroup label="── Virtual CAD Instruments ──">
+          ${Object.values(INSTRUMENT_DEFINITIONS).map(inst => `
+            <option value="${inst.id}" ${inst.id === this.state.selectedInstrument ? 'selected' : ''}>
+              ${inst.name}
+            </option>
+          `).join('')}
+        </optgroup>
+      `;
     }
 
     // Populate Sample Condition Selector options
@@ -304,14 +324,30 @@ class BloodTraceApp {
     const instSelect = document.getElementById('instrumentSelect');
     if (instSelect) instSelect.value = instId;
 
-    this.updateInstrumentMetadata();
-    this.loadDefaultSpotsForCondition();
-
-    if (this.deviceView) {
-      this.deviceView.updateChamberCanvas();
-      this.deviceView.logSerial(`[INSTRUMENT] Loaded specimen: ${instId.toUpperCase()}`);
+    if (instId.startsWith('real_')) {
+      const realKey = instId.replace('real_', '');
+      if (this.dashboardView) {
+        const dashSelect = document.getElementById('dashboardSampleSelect');
+        if (dashSelect) dashSelect.value = realKey;
+        this.dashboardView.setSample(realKey);
+      }
+      this.updateInstrumentMetadata();
+      if (this.deviceView) {
+        this.deviceView.logSerial(`[SPECIMEN] Loaded photographic sample: ${realKey.toUpperCase()}`);
+      }
+    } else {
+      if (this.dashboardView) {
+        const dashSelect = document.getElementById('dashboardSampleSelect');
+        if (dashSelect) dashSelect.value = 'cad_' + instId;
+        this.dashboardView.setSample('cad_' + instId);
+      }
+      this.updateInstrumentMetadata();
+      this.loadDefaultSpotsForCondition();
+      if (this.deviceView) {
+        this.deviceView.updateChamberCanvas();
+        this.deviceView.logSerial(`[INSTRUMENT] Loaded specimen: ${instId.toUpperCase()}`);
+      }
     }
-    if (this.dashboardView) this.dashboardView.updateAllPanels();
   }
 
   selectCondition(condId) {
@@ -361,17 +397,26 @@ class BloodTraceApp {
       this.state.spots = [
         { ...baseSpot, radiusRatio: 0.048, intensity: 0.65 }
       ];
-    } else if (cond === 'scratch') {
-      this.state.spots = [
-        { ...baseSpot, radiusRatio: 0.040, intensity: 0.80 }
-      ];
     }
   }
 
   updateInstrumentMetadata() {
-    const inst = INSTRUMENT_DEFINITIONS[this.state.selectedInstrument];
     const metaEl = document.getElementById('instrumentMetaDisplay');
-    if (metaEl && inst) {
+    if (!metaEl) return;
+    if (this.state.selectedInstrument.startsWith('real_')) {
+      const realKey = this.state.selectedInstrument.replace('real_', '');
+      const sample = REAL_IMAGE_SAMPLES[realKey];
+      if (sample) {
+        metaEl.innerHTML = `
+          <div class="meta-row"><span class="meta-lbl">Specimen:</span> <span class="meta-val">${sample.name}</span></div>
+          <div class="meta-row"><span class="meta-lbl">Category:</span> <span class="meta-val text-cyan">${sample.category}</span></div>
+          <div class="meta-row"><span class="meta-lbl">File:</span> <span class="meta-val font-mono">${sample.path}</span></div>
+        `;
+        return;
+      }
+    }
+    const inst = INSTRUMENT_DEFINITIONS[this.state.selectedInstrument];
+    if (inst) {
       metaEl.innerHTML = `
         <div class="meta-row"><span class="meta-lbl">Type:</span> <span class="meta-val">${inst.category}</span></div>
         <div class="meta-row"><span class="meta-lbl">Alloy:</span> <span class="meta-val">${inst.material}</span></div>

@@ -68,16 +68,6 @@ export const SAMPLE_CONDITIONS = {
     baseUvEmission: 26,
     baseIrReflectance: 730,
     expectedRisk: 'Low / Artifact'
-  },
-  scratch: {
-    id: 'scratch',
-    name: 'Simulated Surface Scratches',
-    category: 'Mechanical Wear',
-    description: 'Micro-abrasions and mechanical score marks from repeated instrument tray handling.',
-    expectedResult: 'Ambiguous result — manual inspection required',
-    baseUvEmission: 35,
-    baseIrReflectance: 670,
-    expectedRisk: 'Ambiguous / Specular Glare'
   }
 };
 
@@ -171,8 +161,6 @@ export class SensorSimulator {
         deltaUV = (condition.baseUvEmission - 20) * (0.8 + totalSpotAreaWeight * 20);
       } else if (conditionId.startsWith('blood')) {
         deltaUV = 15 * totalSpotAreaWeight * 15;
-      } else if (conditionId === 'scratch') {
-        deltaUV = 10;
       }
 
       uvIntensity = Math.max(0, Math.round(baseUV + deltaUV + noiseUV));
@@ -191,8 +179,6 @@ export class SensorSimulator {
         deltaIR = -absorptionFactor * (0.6 + maxIntensity * 0.4);
       } else if (conditionId === 'detergent') {
         deltaIR = -15; // Minimal absorption
-      } else if (conditionId === 'scratch') {
-        deltaIR = -70 * (0.5 + this.rng.next() * 0.5); // Specular angle dispersion
       } else if (conditionId === 'water_mark') {
         deltaIR = -25;
       }
@@ -306,14 +292,6 @@ function drawAmbientAppearance(ctx, x, y, r, intensity, conditionId) {
     ctx.beginPath();
     ctx.ellipse(x, y, r * 1.1, r * 0.85, Math.PI / 6, 0, Math.PI * 2);
     ctx.stroke();
-  } else if (conditionId === 'scratch') {
-    // Specular scratch line
-    ctx.strokeStyle = 'rgba(241, 245, 249, 0.85)';
-    ctx.lineWidth = 1.6;
-    ctx.beginPath();
-    ctx.moveTo(x - r * 1.2, y - r * 0.8);
-    ctx.lineTo(x + r * 1.2, y + r * 0.8);
-    ctx.stroke();
   }
 }
 
@@ -351,14 +329,6 @@ function drawUvAppearance(ctx, x, y, r, intensity, conditionId) {
     ctx.strokeStyle = 'rgba(147, 197, 253, 0.3)';
     ctx.lineWidth = 1.2;
     ctx.strokeRect(x - r, y - r * 0.8, r * 2, r * 1.6);
-  } else if (conditionId === 'scratch') {
-    // Dull specular reflection under UV
-    ctx.strokeStyle = 'rgba(165, 180, 252, 0.5)';
-    ctx.lineWidth = 1.2;
-    ctx.beginPath();
-    ctx.moveTo(x - r, y - r * 0.7);
-    ctx.lineTo(x + r, y + r * 0.7);
-    ctx.stroke();
   }
 }
 
@@ -390,14 +360,6 @@ function drawIrAppearance(ctx, x, y, r, intensity, conditionId) {
     ctx.fillStyle = grad;
     drawIrregularBlob(ctx, x, y, r, 0.2);
     ctx.fill();
-  } else if (conditionId === 'scratch') {
-    // Strong directional specular scattering in NIR
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.95)';
-    ctx.lineWidth = 2.0;
-    ctx.beginPath();
-    ctx.moveTo(x - r * 1.2, y - r * 0.8);
-    ctx.lineTo(x + r * 1.2, y + r * 0.8);
-    ctx.stroke();
   } else if (conditionId === 'water_mark') {
     // Mild scattering edge
     ctx.strokeStyle = 'rgba(200, 205, 215, 0.35)';
@@ -431,8 +393,6 @@ function drawCandidateResidueMapOverlay(ctx, x, y, r, intensity, conditionId, th
     contrastLevel = 85 * intensity; // High contrast
   } else if (conditionId === 'detergent') {
     contrastLevel = 60 * intensity; // UV fluorescence contrast
-  } else if (conditionId === 'scratch') {
-    contrastLevel = 45 * intensity;
   } else if (conditionId === 'water_mark') {
     contrastLevel = 25 * intensity;
   }

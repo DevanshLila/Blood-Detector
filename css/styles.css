@@ -1387,6 +1387,369 @@ body.theme-navy {
 /* ==========================================================================
    Print Stylesheet
    ========================================================================== */
+/* ==========================================================================
+   BloodTrace Vision — Poster Layout & Real-Image Inspection Styles
+   ========================================================================== */
+.disclaimer-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: var(--radius-md);
+  padding: 8px 14px;
+  margin-bottom: 14px;
+  font-size: 11px;
+  line-height: 1.4;
+  color: #fef08a;
+}
+.disclaimer-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+/* Laptop Mockup Chassis (Matching Poster UI) */
+.bloodtrace-laptop-frame {
+  background: #080e1a;
+  border: 2px solid #1a2a44;
+  border-radius: 12px;
+  padding: 16px 20px 20px 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(6, 182, 212, 0.1);
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.bt-screen-header {
+  text-align: center;
+  position: relative;
+  margin-bottom: 16px;
+}
+.bt-camera-notch {
+  width: 8px;
+  height: 8px;
+  background: #111d33;
+  border: 1px solid #1e3152;
+  border-radius: 50%;
+  margin: 0 auto 6px auto;
+}
+.bt-screen-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  text-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
+}
+
+/* 4-Panel Row (Poster Layout) */
+.bt-panels-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  align-items: stretch;
+}
+
+@media (max-width: 1100px) {
+  .bt-panels-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.bt-panel {
+  background: #060a12;
+  border: 1px solid #1e3152;
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.bt-panel:hover {
+  border-color: var(--cyan-primary);
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.15);
+}
+
+.bt-panel-header {
+  background: #0c1527;
+  padding: 8px 10px;
+  text-align: center;
+  border-bottom: 1px solid #182844;
+}
+.bt-panel-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+.bt-panel-subtitle {
+  font-size: 10px;
+  color: var(--cyan-primary);
+  font-family: var(--font-mono);
+}
+
+.bt-canvas-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #020408;
+  position: relative;
+  min-height: 220px;
+  overflow: hidden;
+}
+.bt-canvas-container canvas {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+/* Panel 4 Contamination Map with Color Bar */
+.bt-map-with-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.bt-map-canvas-wrap {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bt-colorbar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 6px;
+  background: #030712;
+  border-left: 1px solid #1e3152;
+  width: 44px;
+}
+.bt-colorbar-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  user-select: none;
+}
+.bt-colorbar-gradient {
+  width: 12px;
+  flex: 1;
+  margin: 6px 0;
+  border-radius: 2px;
+  background: linear-gradient(to bottom, #ff1a1a 0%, #d90429 25%, #990000 50%, #4a0000 75%, #050505 100%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.4);
+}
+
+/* Poster Bottom Status Bar */
+.bt-status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px solid #1a2a44;
+}
+
+.bt-area-pill {
+  background: #0c1527;
+  border: 1px solid #06b6d4;
+  box-shadow: 0 0 8px rgba(6, 182, 212, 0.25);
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.bt-area-pill strong {
+  color: var(--cyan-light);
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+.bt-status-badge {
+  padding: 8px 22px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.bt-badge-detected {
+  background: #dc2626;
+  border: 1px solid #ef4444;
+  color: #ffffff;
+  box-shadow: 0 0 14px rgba(239, 68, 68, 0.6);
+  animation: pulse-glow-red 2s infinite ease-in-out;
+}
+@keyframes pulse-glow-red {
+  0%, 100% { box-shadow: 0 0 12px rgba(239, 68, 68, 0.5); }
+  50% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.85); }
+}
+
+.bt-badge-clean {
+  background: #059669;
+  border: 1px solid #10b981;
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+}
+
+.bt-badge-ambiguous {
+  background: #d97706;
+  border: 1px solid #f59e0b;
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+}
+
+.bt-badge-unavailable {
+  background: #475569;
+  border: 1px solid #64748b;
+  color: #cbd5e1;
+}
+
+/* Candidate Region Inspector */
+.roi-inspector-container {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-top: 16px;
+}
+.roi-inspector-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.roi-inspector-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.roi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+.roi-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid #ef4444;
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  font-size: 11px;
+}
+.roi-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.roi-card-title {
+  font-weight: 700;
+  color: #f1f5f9;
+  font-family: var(--font-mono);
+}
+.roi-confidence-pill {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+}
+.roi-metrics-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin: 6px 0;
+  padding: 6px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+.roi-metric-item {
+  display: flex;
+  flex-direction: column;
+}
+.roi-metric-label {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+.roi-metric-val {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--cyan-light);
+}
+.roi-explanation {
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.35;
+  margin-top: 4px;
+}
+
+/* Compare Both View */
+.compare-both-section {
+  background: #080e1a;
+  border: 2px solid #1a2a44;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+}
+.compare-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.compare-table-wrapper {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  margin-top: 14px;
+}
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+.compare-table th {
+  background: #0e1a30;
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--cyan-light);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.compare-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
+}
+.compare-table tr:hover td {
+  background: rgba(6, 182, 212, 0.05);
+}
+
 @media print {
   body {
     background: #ffffff !important;

@@ -110,7 +110,7 @@ export class ComputerVisionPipeline {
         opticalContrast = (Math.min(85, 15 + deltaUV * 0.20)) * (spot.intensity || 1.0);
         signatureType = 'high_uv_fluorescence';
       } else if (deltaIR >= 25 && deltaIR < 75) {
-        // Moderate specular absorption / mechanical scatter (scratches or dense mineral residue)
+        // Moderate specular absorption / mechanical scatter (dense mineral residue or drying rings)
         opticalContrast = (20 + deltaIR * 0.45) * (spot.intensity || 1.0);
         signatureType = 'specular_glare';
       } else {
