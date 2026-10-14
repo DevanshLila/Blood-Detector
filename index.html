@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BloodTrace — Dual-Wavelength Medical Instrument Contamination Screening Simulator</title>
+  <meta name="description" content="College-level engineering prototype simulation of BloodTrace: dual-wavelength 365nm UV and 850nm NIR optical contamination screening for reusable surgical instruments.">
+  
+  <!-- Modern Clean Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- BloodTrace Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="theme-navy">
+  <!-- Top Navigation Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="brand-container">
+        <div class="brand-logo-icon">
+          <svg viewBox="0 0 28 28" fill="none" class="brand-svg">
+            <circle cx="14" cy="14" r="12" stroke="#06b6d4" stroke-width="2"/>
+            <circle cx="10" cy="14" r="4" fill="#8b5cf6" opacity="0.8"/>
+            <circle cx="18" cy="14" r="4" fill="#f43f5e" opacity="0.8"/>
+            <path d="M14 6v16" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="2 2"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">BloodTrace <span class="brand-ver">v1.4</span></div>
+          <div class="brand-tagline">Dual-Wavelength Optical Contamination Screening Simulator</div>
+        </div>
+      </div>
+
+      <!-- Regulatory Notice Banner -->
+      <div class="regulatory-pill" title="Engineering Simulation — Not an In-Vitro Diagnostic Medical Device">
+        <span class="pill-dot"></span>
+        <span class="pill-text">SIMULATION PROTOYPE — NOT A CLINICAL TEST RESULT</span>
+      </div>
+    </div>
+
+    <!-- Central Navigation Tabs -->
+    <nav class="header-nav">
+      <button class="nav-tab nav-active" data-nav-view="device">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        Device Simulation
+      </button>
+      <button class="nav-tab" data-nav-view="dashboard">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+        Analysis Dashboard
+      </button>
+      <button class="nav-tab" data-nav-view="results">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Results & Records
+      </button>
+      <button class="nav-tab" data-nav-view="about">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        Engineering Specs
+      </button>
+    </nav>
+
+    <!-- Header Actions -->
+    <div class="header-right">
+      <button id="btnToggleSound" class="btn btn-xs btn-outline" title="Toggle Audio Feedback">
+        🔊 Audio ON
+      </button>
+      <button id="btnRunDemo" class="btn btn-sm btn-accent flex items-center gap-1" title="Launch Step-by-Step Scenario Walkthrough">
+        <span class="btn-icon">⚡</span>
+        <span>Run Demo</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container Layout: Sidebar + Active View Workspace -->
+  <main class="app-layout">
+    <!-- Left Configuration & Control Sidebar -->
+    <aside class="app-sidebar">
+      <!-- Section 1: Instrument Selection -->
+      <div class="sidebar-card">
+        <div class="sidebar-card-title flex items-center justify-between">
+          <span>1. Medical Instrument</span>
+          <span class="text-xs text-cyan font-mono">SPECIMEN</span>
+        </div>
+        <div class="form-group mt-2">
+          <select id="instrumentSelect" class="form-select">
+            <!-- Populated via JS -->
+          </select>
+        </div>
+        <div id="instrumentMetaDisplay" class="instrument-meta-box">
+          <!-- Dynamic details -->
+        </div>
+      </div>
+
+      <!-- Section 2: Sample Condition -->
+      <div class="sidebar-card">
+        <div class="sidebar-card-title flex items-center justify-between">
+          <span>2. Sample Surface Condition</span>
+          <span class="text-xs text-muted font-mono">CHALLENGE</span>
+        </div>
+        <div class="form-group mt-2">
+          <select id="conditionSelect" class="form-select">
+            <!-- Populated via JS -->
+          </select>
+        </div>
+        <div id="conditionMetaDisplay" class="condition-meta-box">
+          <!-- Dynamic details -->
+        </div>
+      </div>
+
+      <!-- Section: Illumination Mode Quick Controls (Requirement 13) -->
+      <div class="sidebar-card">
+        <div class="sidebar-card-title flex items-center justify-between">
+          <span>3. Illumination Mode</span>
+          <span id="sidebarModeTag" class="text-xs text-muted font-mono">OFF</span>
+        </div>
+        <div class="btn-group w-full mt-2" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;">
+          <button id="sbBtnModeOff" class="btn btn-2xs btn-active">OFF</button>
+          <button id="sbBtnModeUv" class="btn btn-2xs">365nm</button>
+          <button id="sbBtnModeIr" class="btn btn-2xs">850nm</button>
+          <button id="sbBtnModeCombined" class="btn btn-2xs">DUAL</button>
+        </div>
+      </div>
+
+      <!-- Section: Detection Threshold Slider (Requirement 13) -->
+      <div class="sidebar-card">
+        <div class="sidebar-card-title flex items-center justify-between">
+          <span>4. Detection Sensitivity</span>
+          <span class="text-xs text-cyan font-mono"><span id="sidebarThresholdVal">35</span> a.u.</span>
+        </div>
+        <div class="mt-2">
+          <input type="range" id="sidebarThresholdSlider" min="10" max="85" value="35" class="range-slider range-sm w-full" />
+          <div class="flex items-center justify-between text-2xs text-muted mt-1 font-mono">
+            <span>Low (10)</span>
+            <span>Nominal (35)</span>
+            <span>High (85)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 5: Scanning Execution Card -->
+      <div class="sidebar-card action-card">
+        <div class="sidebar-card-title flex items-center justify-between">
+          <span>5. Optical Screening</span>
+          <span class="text-xs text-green font-mono">STANDBY</span>
+        </div>
+        <p class="text-xs text-muted mt-1">
+          Automated 5-stage dual-wavelength acquisition & OpenCV-style computer vision.
+        </p>
+
+        <button id="btnSidebarScan" class="btn btn-primary btn-block btn-lg mt-3 flex items-center justify-center gap-2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Start Optical Scan
+        </button>
+
+        <!-- Progress Bar when scanning -->
+        <div id="scanProgressContainer" class="scan-progress-box mt-3" style="display: none;">
+          <div class="progress-bar-track">
+            <div id="scanProgressBar" class="progress-bar-fill" style="width: 0%;"></div>
+          </div>
+          <div id="scanStatusText" class="progress-status-text font-mono text-2xs mt-1">Initializing...</div>
+        </div>
+      </div>
+
+      <!-- Section 4: Live Telemetry Gauges -->
+      <div class="sidebar-card">
+        <div class="sidebar-card-title flex items-center justify-between">
+          <span>Photodiode Real-Time Trace</span>
+          <span id="sidebarAdcVal" class="text-xs text-cyan font-mono">195 ADC</span>
+        </div>
+        <div class="mini-oscilloscope-wrapper mt-2">
+          <canvas id="oscilloscopeCanvas" width="280" height="110" class="mini-canvas"></canvas>
+        </div>
+        <div class="spectral-bar-wrapper mt-3">
+          <div class="text-2xs text-muted mb-1">Dual Wavelength Relative Output (a.u.):</div>
+          <canvas id="spectralBarCanvas" width="280" height="90" class="mini-canvas"></canvas>
+        </div>
+      </div>
+
+      <!-- Quick Action Utilities -->
+      <div class="sidebar-actions-grid mt-2">
+        <button id="btnQuickCSV" class="btn btn-xs btn-outline w-full">Export CSV</button>
+        <button id="btnQuickReport" class="btn btn-xs btn-outline w-full">Generate Report</button>
+      </div>
+    </aside>
+
+    <!-- Center/Right Workspaces (Views) -->
+    <div class="workspace-viewport">
+      <!-- VIEW 1: Device Simulation -->
+      <section id="view-device" class="app-view active">
+        <div id="deviceViewContainer" class="device-view-wrapper">
+          <!-- Populated by DeviceView JS component -->
+        </div>
+      </section>
+
+      <!-- VIEW 2: Laptop Analysis Dashboard -->
+      <section id="view-dashboard" class="app-view">
+        <div id="dashboardViewContainer" class="dashboard-view-wrapper">
+          <!-- Populated by DashboardView JS component -->
+        </div>
+
+        <!-- Latest Results Summary Card attached at bottom of dashboard -->
+        <div class="mt-4">
+          <div id="resultsSummaryCard" class="results-summary-wrapper">
+            <!-- Populated dynamically after scan -->
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 3: Results & History Records -->
+      <section id="view-results" class="app-view">
+        <div class="results-history-view-wrapper">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title text-base">Screening Acquisition History</h2>
+              <p class="text-xs text-muted">Complete telemetry logs and classification outcomes for current session.</p>
+            </div>
+            <div class="regulatory-pill">
+              <span class="pill-dot"></span>
+              <span>SIMULATED DATA — NOT A CLINICAL TEST RESULT</span>
+            </div>
+          </div>
+          <div id="historyListContainer" class="mt-4">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 4: Engineering Specs & Documentation -->
+      <section id="view-about" class="app-view">
+        <div class="about-docs-wrapper">
+          <div class="doc-banner">
+            <h2 class="text-xl font-bold text-white">BloodTrace Technical Architecture & Optical Physics</h2>
+            <p class="text-sm text-cyan mt-1">Dual-Wavelength Pre-Sterilization Instrument Screening Prototype</p>
+          </div>
+
+          <div class="docs-grid mt-4">
+            <!-- Card 1: Optical Physics -->
+            <div class="doc-card">
+              <h3 class="doc-card-title text-violet">1. Optical Physics & Spectral Specificity</h3>
+              <p class="text-xs text-slate-300 mt-2">
+                BloodTrace exploits differential absorption and fluorescence spectroscopy between metallic surgical alloys and biological residues:
+              </p>
+              <ul class="doc-bullet-list">
+                <li><strong>365 nm UV-A Illumination:</strong> Organic cellular proteins and free porphyrins exhibit autofluorescence. Crucially, cleaning detergents with optical brighteners produce bright blue-cyan emission (~430-470 nm), making UV alone prone to false positives.</li>
+                <li><strong>850 nm NIR Illumination:</strong> Passivated 316L/420 surgical stainless steel exhibits ~65% specular reflectance. Deoxygenated and dried hemoglobin (methemoglobin) exhibits strong NIR absorption. Under 850nm, dried blood spots appear as stark dark silhouettes, whereas detergent films remain nearly transparent.</li>
+                <li><strong>Dual-Wavelength Cross-Correlation:</strong> Combining UV fluorescence and NIR absorption allows the computer vision pipeline to distinguish true biological residue from detergent films and scratches.</li>
+              </ul>
+            </div>
+
+            <!-- Card 2: Hardware Architecture -->
+            <div class="doc-card">
+              <h3 class="doc-card-title text-cyan">2. Hardware Implementation & Bill of Materials</h3>
+              <p class="text-xs text-slate-300 mt-2">
+                Designed for affordable fabrication in a college engineering laboratory:
+              </p>
+              <div class="bom-table-wrapper mt-2">
+                <table class="bom-table">
+                  <thead>
+                    <tr><th>Subsystem</th><th>Component</th><th>Interface</th><th>Est. Cost</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Microcontroller</td><td>Arduino UNO R4 Minima (RA4M1 Cortex-M4)</td><td>USB-C Serial (115200bps)</td><td>$20.00</td></tr>
+                    <tr><td>UV Emitter</td><td>High-Power 365 nm UV LED (3W)</td><td>Pin D9 via IRLZ44N MOSFET</td><td>$6.50</td></tr>
+                    <tr><td>NIR Emitters</td><td>Dual 850 nm High-Radiance IR LEDs</td><td>Pin D10 via IRLZ44N MOSFET</td><td>$4.00</td></tr>
+                    <tr><td>Optical Sensor</td><td>BPW34 Silicon PIN Photodiode (430-1100nm)</td><td>Pin A0 via MCP6002 TIA Amp</td><td>$5.50</td></tr>
+                    <tr><td>Imaging Sensor</td><td>Full-HD USB Camera Module (UVC)</td><td>Direct USB to Laptop</td><td>$18.00</td></tr>
+                    <tr><td>Enclosure</td><td>3D-Printed Matte Black PLA Chamber</td><td>Light-tight baffled lid</td><td>$10.00</td></tr>
+                    <tr class="font-bold text-white"><td>TOTAL SYSTEM</td><td>BloodTrace Screening Prototype</td><td>Complete BOM</td><td>~$64.00</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Card 3: Computer Vision Pipeline -->
+            <div class="doc-card">
+              <h3 class="doc-card-title text-pink">3. OpenCV Python Simulation Pipeline</h3>
+              <p class="text-xs text-slate-300 mt-2">
+                The simulated Python/OpenCV computer vision pipeline executes the following image processing graph:
+              </p>
+              <div class="pipeline-flow-diagram mt-2">
+                <div class="flow-step">1. Reference Capture</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">2. Dual UV/IR Strobe</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">3. Dark Subtraction</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">4. Normalized Diff (NDI)</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">5. Morphological Filter</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">6. Contour Extract</div>
+              </div>
+              <p class="text-2xs text-muted mt-2">
+                The algorithm produces candidate contours with labels strictly bounded to "Suspected Residue" or "Possible Contamination" to prevent clinical misinterpretation.
+              </p>
+            </div>
+
+            <!-- Card 4: Clinical & Ethical Limitations -->
+            <div class="doc-card">
+              <h3 class="doc-card-title text-amber">4. Clinical Scope & Regulatory Limitations</h3>
+              <p class="text-xs text-slate-300 mt-2">
+                <strong>Mandatory Regulatory Notice:</strong>
+                Optical inspection is intended purely as a rapid, non-destructive pre-screening tool for Sterile Processing Departments (SPD) to catch visible gross residue prior to packaging and autoclaving.
+              </p>
+              <p class="text-xs text-slate-300 mt-2">
+                It does not replace validated chemical protein assays (e.g. bicinchoninic acid BCA or ninhydrin swabs) or biological spore indicators. Optical contrast cannot determine microbial sterility or quantify bioburden below the optical resolution limit.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- ES6 Modular Application Entry Point -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
