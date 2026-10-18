@@ -12,21 +12,34 @@
 
 ---
 
-## 🌐 Live Online Simulation & Instant Mobile Access
-
-Experience the interactive **BloodTrace™ Vision** simulation directly in your web browser — no external hardware or local installation required:
-
-👉 **Direct Web Link**: [**https://devanshlila.github.io/Blood-Detector/**](https://devanshlila.github.io/Blood-Detector/)
-
-### 📱 Scan QR Code to Launch on Mobile / Tablet / Laptop
-Judges, professors, and reviewers can scan the QR code below using any smartphone camera to open and test the simulation live:
+## ⚡ RUN SIMULATION (ONLINE & INSTANT ACCESS)
 
 <p align="center">
   <a href="https://devanshlila.github.io/Blood-Detector/">
-    <img src="assets/images/simulation_qr_code.png" alt="BloodTrace™ Online Simulation QR Code" width="380" style="border-radius: 12px; box-shadow: 0 8px 24px rgba(6,182,212,0.3);" />
+    <img src="https://img.shields.io/badge/%E2%9A%A1%20RUN%20SIMULATION-LAUNCH%20NOW%20(NO%20INSTALL)-00e5ff?style=for-the-badge&logoColor=white&labelColor=24292e" alt="Run Simulation" />
   </a>
-  <br />
-  <em><strong>Scan to Open BloodTrace™ Vision</strong> | Hosted on GitHub Pages (Branch: <code>sim1</code>)</em>
+  &nbsp;&nbsp;
+  <a href="https://devanshlila.github.io/Blood-Detector/">
+    <img src="https://img.shields.io/badge/DEPLOYED-GITHUB%20PAGES-00e676?style=for-the-badge&logo=github&logoColor=white&labelColor=24292e" alt="Deployed GitHub Pages" />
+  </a>
+</p>
+
+<h3 align="center">
+  👉 <a href="https://devanshlila.github.io/Blood-Detector/">https://devanshlila.github.io/Blood-Detector/</a> 👈
+</h3>
+
+<p align="center">
+  Scan with any phone camera or click the link above to run the simulation instantly:
+</p>
+
+<p align="center">
+  <a href="https://devanshlila.github.io/Blood-Detector/">
+    <img src="assets/images/simulation_qr_code.png" alt="BloodTrace Simulation Instant Access QR Code" width="460" />
+  </a>
+</p>
+
+<p align="center">
+  <em>(Tip: You can copy the image above directly into your Presentation PPT!)</em>
 </p>
 
 ---
