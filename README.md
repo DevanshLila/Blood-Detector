@@ -12,6 +12,25 @@
 
 ---
 
+## 🌐 Live Online Simulation & Instant Mobile Access
+
+Experience the interactive **BloodTrace™ Vision** simulation directly in your web browser — no external hardware or local installation required:
+
+👉 **Direct Web Link**: [**https://devanshlila.github.io/Blood-Detector/**](https://devanshlila.github.io/Blood-Detector/)
+
+### 📱 Scan QR Code to Launch on Mobile / Tablet / Laptop
+Judges, professors, and reviewers can scan the QR code below using any smartphone camera to open and test the simulation live:
+
+<p align="center">
+  <a href="https://devanshlila.github.io/Blood-Detector/">
+    <img src="assets/images/simulation_qr_code.png" alt="BloodTrace™ Online Simulation QR Code" width="380" style="border-radius: 12px; box-shadow: 0 8px 24px rgba(6,182,212,0.3);" />
+  </a>
+  <br />
+  <em><strong>Scan to Open BloodTrace™ Vision</strong> | Hosted on GitHub Pages (Branch: <code>sim1</code>)</em>
+</p>
+
+---
+
 ## 1. Project Overview & Physical Principles
 
 In hospital Sterile Processing Departments (SPD) and Central Sterile Services Departments (CSSD), reusable surgical instruments (forceps, dissecting scissors, hemostatic clamps) must be meticulously cleaned to remove organic bioburden (dried blood, tissue proteins, coagulum) before packaging and terminal sterilization.

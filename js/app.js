@@ -12,6 +12,7 @@ import { TelemetryCharts } from './components/charts.js';
 import { DemoManager } from './components/demo-mode.js';
 import { ReportManager } from './components/report-modal.js';
 import { REAL_IMAGE_SAMPLES } from './models/real-image-processor.js';
+import { QRModalManager } from './components/qr-modal.js';
 
 class BloodTraceApp {
   constructor() {
@@ -206,6 +207,14 @@ class BloodTraceApp {
     if (btnRunDemo) {
       btnRunDemo.addEventListener('click', () => {
         this.demoManager.start();
+      });
+    }
+
+    // Online QR modal button
+    const btnOnlineQR = document.getElementById('btnOnlineQR');
+    if (btnOnlineQR) {
+      btnOnlineQR.addEventListener('click', () => {
+        QRModalManager.openQRModal();
       });
     }
 
